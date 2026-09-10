@@ -13,9 +13,7 @@ const { content } = Astro.props;
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero-bg" aria-hidden="true">
-    <HeroGrainient />
-  </div>
+  <HeroGrainient />
 
   <div class="hero-content">
     <div class="hero-grid">
@@ -48,12 +46,6 @@ const { content } = Astro.props;
 
       <div class="hero-right">
         <div class="hero-product-showcase">
-          <div class="hero-product-ring" aria-hidden="true"></div>
-          <div class="hero-product-ring" aria-hidden="true"></div>
-          <div class="hero-glow" aria-hidden="true"></div>
-          <div class="hero-orbit hero-orbit-1" aria-hidden="true"><div class="hero-orbit-dot"></div></div>
-          <div class="hero-orbit hero-orbit-2" aria-hidden="true"><div class="hero-orbit-dot"></div></div>
-          <div class="hero-orbit hero-orbit-3" aria-hidden="true"><div class="hero-orbit-dot"></div></div>
           <HeroBottle />
         </div>
       </div>
@@ -73,13 +65,6 @@ const { content } = Astro.props;
     display: flex;
     align-items: center;
     overflow: hidden;
-    background: #000;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
   }
 
   .hero-content {
@@ -194,98 +179,6 @@ const { content } = Astro.props;
     position: relative;
     width: 100%;
     max-width: 480px;
-    perspective: 1200px;
-    transform-style: preserve-3d;
-  }
-
-  .hero-product-showcase::before {
-    content: '';
-    position: absolute;
-    bottom: -40px;
-    left: 10%;
-    right: 10%;
-    height: 60px;
-    background: radial-gradient(ellipse, rgba(204, 255, 0, 0.12) 0%, transparent 70%);
-    filter: blur(20px);
-    animation: shadowPulse 8s ease-in-out infinite;
-  }
-
-  @keyframes shadowPulse {
-    0%, 100% { transform: scaleX(1); opacity: 0.5; }
-    50% { transform: scaleX(1.2); opacity: 0.8; }
-  }
-
-  .hero-product-ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 320px;
-    height: 320px;
-    border: 1px solid rgba(204, 255, 0, 0.1);
-    border-radius: 50%;
-    animation: ringPulse 4s ease-in-out infinite;
-  }
-
-  .hero-product-ring:nth-child(2) {
-    width: 360px;
-    height: 360px;
-    animation-delay: 0.5s;
-    animation-duration: 5s;
-  }
-
-  @keyframes ringPulse {
-    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.05); }
-  }
-
-  .hero-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(204, 255, 0, 0.2) 0%, rgba(76, 175, 80, 0.1) 40%, transparent 70%);
-    filter: blur(60px);
-    animation: glowPulse 4s ease-in-out infinite;
-  }
-
-  @keyframes glowPulse {
-    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-    33% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.15) rotate(3deg); }
-    66% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.05) rotate(-2deg); }
-  }
-
-  .hero-orbit {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid rgba(204, 255, 0, 0.08);
-    border-radius: 50%;
-    animation: orbitSpin linear infinite;
-  }
-
-  .hero-orbit-1 { width: 380px; height: 380px; animation-duration: 12s; }
-  .hero-orbit-2 { width: 480px; height: 480px; animation-duration: 18s; animation-direction: reverse; border-style: dashed; }
-  .hero-orbit-3 { width: 560px; height: 560px; animation-duration: 25s; }
-
-  @keyframes orbitSpin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
-  }
-
-  .hero-orbit-dot {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: var(--color-accent);
-    border-radius: 50%;
-    top: -3px;
-    left: 50%;
-    margin-left: -3px;
-    box-shadow: 0 0 12px rgba(204, 255, 0, 0.6);
   }
 
   .hero-scroll {
@@ -301,6 +194,7 @@ const { content } = Astro.props;
     font-size: 0.7rem;
     letter-spacing: var(--tracking-widest-plus);
     text-transform: uppercase;
+    z-index: 2;
   }
 
   .hero-scroll-line {
@@ -354,21 +248,11 @@ const { content } = Astro.props;
     .hero-stat { text-align: center; }
     .hero-stat-value { font-size: 1.75rem; }
     .hero-product-showcase { max-width: 320px; }
-    .hero-product-ring { width: 240px; height: 240px; }
-    .hero-product-ring:nth-child(2) { width: 280px; height: 280px; }
-    .hero-orbit-1 { width: 300px; height: 300px; }
-    .hero-orbit-2 { width: 380px; height: 380px; }
-    .hero-orbit-3 { width: 440px; height: 440px; }
-    .hero-glow { width: 350px; height: 350px; }
   }
 
   /* Reduced Motion */
   @media (prefers-reduced-motion: reduce) {
-    .hero-product-ring,
-    .hero-glow,
-    .hero-orbit,
-    .hero-scroll-line::after,
-    .hero-product-showcase::before {
+    .hero-scroll-line::after {
       animation: none !important;
     }
     .reveal { opacity: 1; transform: none; transition: none; }
