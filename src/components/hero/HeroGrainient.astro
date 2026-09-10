@@ -2,9 +2,16 @@
 // HeroGrainient — WebGL animated gradient background
 ---
 
-<div class="hero-grainient" id="heroGrainient" aria-hidden="true"></div>
+<div class="hero-grainient" id="heroGrainient" data-grainient aria-hidden="true"></div>
 
-<script is:inline src="/scripts/grainient.js"></script>
+<script>
+  import { initGrainient } from './HeroGrainient';
+  
+  const container = document.getElementById('heroGrainient');
+  if (container) {
+    initGrainient(container);
+  }
+</script>
 
 <style>
   .hero-grainient {
