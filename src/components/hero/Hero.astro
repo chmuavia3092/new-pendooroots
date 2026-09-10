@@ -15,7 +15,6 @@ const { content } = Astro.props;
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-bg" aria-hidden="true">
     <HeroGrainient />
-    <div class="hero-gradient" aria-hidden="true"></div>
   </div>
 
   <div class="hero-content">
@@ -74,23 +73,13 @@ const { content } = Astro.props;
     display: flex;
     align-items: center;
     overflow: hidden;
-    background: #002e11;
+    background: #000;
   }
 
   .hero-bg {
     position: absolute;
     inset: 0;
     z-index: 0;
-  }
-
-  .hero-gradient {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 15% 50%, rgba(0,75,28,0.4) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 40% at 85% 30%, rgba(0,107,42,0.2) 0%, transparent 50%);
-    z-index: 1;
-    pointer-events: none;
   }
 
   .hero-content {
