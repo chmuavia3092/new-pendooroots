@@ -80,7 +80,7 @@
   gl.uniform1f(uBS, 0.05);
   gl.uniform1f(uRA, 500.0);
   gl.uniform1f(uNS, 2.0);
-  gl.uniform1f(uGA, 0.1);
+  gl.uniform1f(uGA, 0.25);
   gl.uniform1f(uGS, 2.0);
   gl.uniform1f(uGAn, 0.0);
   gl.uniform1f(uCo, 1.5);
