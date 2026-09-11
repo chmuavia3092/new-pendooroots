@@ -12,13 +12,30 @@ const { content } = Astro.props;
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <svg class="grain-svg" aria-hidden="true">
-    <filter id="heroGrain">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-      <feColorMatrix type="saturate" values="0" />
-    </filter>
-    <rect width="100%" height="100%" filter="url(#heroGrain)" />
-  </svg>
+  <div class="hero-grainient" data-grainient
+    data-color1="#ccff00"
+    data-color2="#004b1c"
+    data-color3="#002e11"
+    data-time-speed="0.2"
+    data-color-balance="0.02"
+    data-warp-strength="1.2"
+    data-warp-frequency="4.5"
+    data-warp-speed="1.8"
+    data-warp-amplitude="60"
+    data-blend-angle="15"
+    data-blend-softness="0.08"
+    data-rotationAmount="400"
+    data-noise-scale="2.5"
+    data-grain-amount="0.22"
+    data-grain-scale="10"
+    data-grain-animated="false"
+    data-contrast="1.6"
+    data-gamma="0.95"
+    data-saturation="2.0"
+    data-center-x="-0.1"
+    data-center-y="0.05"
+    data-zoom="0.85"
+  ></div>
 
   <div class="hero-content">
     <div class="hero-grid">
@@ -63,6 +80,8 @@ const { content } = Astro.props;
   </div>
 </section>
 
+<script is:inline src="/scripts/grainient-pendooroots.js"></script>
+
 <style>
   .hero {
     min-height: 100vh;
@@ -70,40 +89,18 @@ const { content } = Astro.props;
     display: flex;
     align-items: center;
     overflow: hidden;
-    background:
-      radial-gradient(ellipse 80% 60% at 15% 25%, rgba(204, 255, 0, 0.35) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 25% 40%, rgba(180, 230, 0, 0.25) 0%, transparent 55%),
-      radial-gradient(ellipse 70% 55% at 45% 45%, rgba(76, 175, 80, 0.3) 0%, transparent 60%),
-      radial-gradient(ellipse 65% 50% at 65% 55%, rgba(46, 125, 50, 0.35) 0%, transparent 55%),
-      radial-gradient(ellipse 80% 70% at 85% 75%, rgba(27, 94, 32, 0.5) 0%, transparent 65%),
-      radial-gradient(ellipse 50% 40% at 70% 30%, rgba(56, 142, 60, 0.2) 0%, transparent 50%),
-      linear-gradient(160deg, #0a2e0a 0%, #1b5e20 30%, #2e7d32 55%, #1b5e20 80%, #0a1a0a 100%);
+    background: #0a1a0a;
   }
 
-  .hero::before {
-    content: '';
+  .hero-grainient {
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .grain-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0.12;
-    mix-blend-mode: overlay;
+    z-index: 0;
   }
 
   .hero-content {
     position: relative;
-    z-index: 3;
+    z-index: 2;
     width: 100%;
     padding: 140px 0 100px;
   }
@@ -272,11 +269,6 @@ const { content } = Astro.props;
     .hero {
       min-height: auto;
       padding: 100px 0 80px;
-      background:
-        radial-gradient(ellipse 90% 70% at 20% 15%, rgba(204, 255, 0, 0.3) 0%, transparent 55%),
-        radial-gradient(ellipse 70% 55% at 40% 50%, rgba(76, 175, 80, 0.25) 0%, transparent 50%),
-        radial-gradient(ellipse 80% 65% at 80% 85%, rgba(27, 94, 32, 0.45) 0%, transparent 60%),
-        linear-gradient(160deg, #0a2e0a 0%, #1b5e20 35%, #2e7d32 60%, #1b5e20 85%, #0a1a0a 100%);
     }
     .hero-content { padding: 80px 0 60px; }
     .hero-title { font-size: clamp(2.5rem, 8vw, 3.5rem); }
