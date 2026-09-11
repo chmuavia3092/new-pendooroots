@@ -65,6 +65,12 @@ const { content } = Astro.props;
     display: flex;
     align-items: center;
     overflow: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 20%, #b8e600 0%, transparent 50%),
+      radial-gradient(ellipse 60% 50% at 30% 50%, #4caf50 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 70% 40%, #2e7d32 0%, transparent 50%),
+      radial-gradient(ellipse 60% 60% at 90% 80%, #1b5e20 0%, transparent 60%),
+      linear-gradient(135deg, #ccff00 0%, #4caf50 25%, #2e7d32 50%, #1b5e20 75%, #002e11 100%);
   }
 
   .hero-content {
@@ -93,10 +99,10 @@ const { content } = Astro.props;
     align-items: center;
     gap: 8px;
     padding: 8px 20px;
-    background: var(--hero-tag-bg);
-    border: 1px solid var(--hero-tag-border);
+    background: rgba(204, 255, 0, 0.1);
+    border: 1px solid rgba(204, 255, 0, 0.2);
     border-radius: var(--radius-full);
-    color: var(--color-accent);
+    color: #ccff00;
     font-size: var(--text-sm);
     font-weight: var(--font-weight-semibold);
     letter-spacing: var(--tracking-widest);
@@ -120,7 +126,7 @@ const { content } = Astro.props;
   }
 
   .hero-title .accent {
-    color: var(--color-accent);
+    color: #ccff00;
     font-family: var(--font-family-script);
     font-style: normal;
     font-size: 1.15em;
@@ -129,7 +135,7 @@ const { content } = Astro.props;
 
   .hero-subtitle {
     font-size: 1.15rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.7);
     line-height: 1.7;
     margin-bottom: 48px;
     max-width: 480px;
@@ -163,7 +169,7 @@ const { content } = Astro.props;
 
   .hero-stat-label {
     font-size: var(--text-xs);
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.5);
     text-transform: uppercase;
     letter-spacing: var(--tracking-widest);
   }
@@ -212,7 +218,7 @@ const { content } = Astro.props;
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--color-accent);
+    background: #ccff00;
     animation: scrollLine 2s ease-in-out infinite;
   }
 
@@ -239,6 +245,11 @@ const { content } = Astro.props;
     .hero {
       min-height: auto;
       padding: 100px 0 80px;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, #b8e600 0%, transparent 50%),
+        radial-gradient(ellipse 60% 50% at 50% 50%, #4caf50 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at 80% 90%, #1b5e20 0%, transparent 60%),
+        linear-gradient(135deg, #ccff00 0%, #4caf50 30%, #2e7d32 60%, #1b5e20 85%, #002e11 100%);
     }
     .hero-content { padding: 80px 0 60px; }
     .hero-title { font-size: clamp(2.5rem, 8vw, 3.5rem); }
