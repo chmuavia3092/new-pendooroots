@@ -1,6 +1,7 @@
 ---
 import '@/styles/global.css';
 import '@/styles/components.css';
+import '@/styles/border-glow.css';
 
 interface Props {
   title: string;
@@ -209,7 +210,15 @@ const fullOgImage = new URL(ogImage, siteUrl).href;
         <span>Shipping</span>
         <span id="cartShipping">Calculated at checkout</span>
       </div>
-      <a href="/checkout" class="btn btn-primary btn-full cart-checkout-btn">Proceed to Checkout</a>
+      <a href="/checkout" class="btn btn-primary btn-full cart-checkout-btn"
+         data-border-glow
+         data-glow-color="120 100 50"
+         data-background-color="#004b1c"
+         data-border-radius="999"
+         data-glow-radius="25"
+         data-glow-intensity="1"
+         data-cone-spread="25"
+         data-colors="#ccff00,#4caf50,#2e7d32">Proceed to Checkout</a>
       <a href="/shop" class="btn btn-ghost btn-full">Continue Shopping</a>
     </div>
   </aside>
@@ -292,5 +301,6 @@ const fullOgImage = new URL(ogImage, siteUrl).href;
 
   <!-- PAGE SCRIPTS -->
   <script type="module" src="/src/scripts/main.ts"></script>
+  <script is:inline src="/scripts/border-glow.js"></script>
 </body>
 </html>

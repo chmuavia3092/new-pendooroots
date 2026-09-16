@@ -9,20 +9,27 @@ const { cta1, cta2, class: className = '' } = Astro.props;
 ---
 
 <div class="hero-actions {className}">
-  <a href="/shop" class="star-border-container star-pill star-lg"
-     style="--star-color:#ccff00;--star-speed:5s;--star-thickness:1px;--star-radius:999px;--star-face:var(--color-primary);">
-    <span class="border-gradient-top"></span>
-    <span class="border-gradient-bottom"></span>
-    <span class="inner-content">
-      {cta1} <i class="fas fa-arrow-right" aria-hidden="true"></i>
-    </span>
+  <a href="/shop" class="btn btn-primary btn-lg"
+     data-border-glow
+     data-glow-color="120 100 50"
+     data-background-color="#004b1c"
+     data-border-radius="999"
+     data-glow-radius="30"
+     data-glow-intensity="1"
+     data-cone-spread="25"
+     data-colors="#ccff00,#4caf50,#2e7d32">
+    {cta1} <i class="fas fa-arrow-right" aria-hidden="true"></i>
   </a>
 
-  <a href="/shop/lemoo-washer" class="hero-btn-secondary" data-specular
-     data-sb-radius="999" data-sb-auto="true" data-sb-line-color="#ccff00"
-     data-sb-base-color="#0f2f17" data-sb-text-color="#ffffff"
-     data-sb-intensity="0.85" data-sb-shine-size="8" data-sb-shine-fade="45"
-     data-sb-thickness="1" data-sb-speed="0.4" data-sb-proximity="200">
+  <a href="/shop/lemoo-washer" class="btn btn-outline btn-lg"
+     data-border-glow
+     data-glow-color="120 100 50"
+     data-background-color="transparent"
+     data-border-radius="999"
+     data-glow-radius="30"
+     data-glow-intensity="0.8"
+     data-cone-spread="25"
+     data-colors="#ccff00,#4caf50,#2e7d32">
     {cta2} <i class="fas fa-play" aria-hidden="true"></i>
   </a>
 </div>

@@ -45,11 +45,16 @@ import { heroContent, featuresContent, testimonialsContent, collectionsContent }
         ))}
       </div>
       <div style="text-align:center; margin-top:48px;" class="reveal">
-        <a href="/shop" class="star-border-container star-pill star-lg"
-           style="--star-color:#ccff00;--star-speed:5s;--star-thickness:1px;--star-radius:999px;--star-face:var(--color-primary);">
-          <span class="border-gradient-top"></span>
-          <span class="border-gradient-bottom"></span>
-          <span class="inner-content">View All Products <i class="fas fa-arrow-right"></i></span>
+        <a href="/shop" class="btn btn-primary btn-lg"
+           data-border-glow
+           data-glow-color="120 100 50"
+           data-background-color="#004b1c"
+           data-border-radius="999"
+           data-glow-radius="30"
+           data-glow-intensity="1"
+           data-cone-spread="25"
+           data-colors="#ccff00,#4caf50,#2e7d32">
+          View All Products <i class="fas fa-arrow-right"></i>
         </a>
       </div>
     </div>
@@ -152,11 +157,15 @@ import { heroContent, featuresContent, testimonialsContent, collectionsContent }
               <div class="about-stat-label">Products</div>
             </div>
           </div>
-          <a href="/about" class="btn btn-primary" data-specular
-             data-sb-radius="999" data-sb-auto="true" data-sb-line-color="#ffffff"
-             data-sb-base-color="#525252" data-sb-text-color="#f5f5f5"
-             data-sb-intensity="1" data-sb-shine-size="10" data-sb-shine-fade="40"
-             data-sb-thickness="1" data-sb-speed="0.35" data-sb-proximity="250">Read Our Story <i class="fas fa-arrow-right"></i></a>
+          <a href="/about" class="btn btn-primary"
+             data-border-glow
+             data-glow-color="120 100 50"
+             data-background-color="#004b1c"
+             data-border-radius="999"
+             data-glow-radius="30"
+             data-glow-intensity="1"
+             data-cone-spread="25"
+             data-colors="#ccff00,#4caf50,#2e7d32">Read Our Story <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
     </div>
@@ -171,7 +180,15 @@ import { heroContent, featuresContent, testimonialsContent, collectionsContent }
         <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Welcome to the PendooRoots family!', 'success'); this.reset();">
           <label class="sr-only" for="nl_email">Email address</label>
           <input id="nl_email" name="email" type="email" placeholder="Enter your email…" autocomplete="email" required />
-          <button type="submit">Subscribe</button>
+          <button type="submit"
+             data-border-glow
+             data-glow-color="120 100 50"
+             data-background-color="#ccff00"
+             data-border-radius="999"
+             data-glow-radius="25"
+             data-glow-intensity="1"
+             data-cone-spread="25"
+             data-colors="#ccff00,#4caf50,#2e7d32">Subscribe</button>
         </form>
       </div>
     </BorderBeam>
