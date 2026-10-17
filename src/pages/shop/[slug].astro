@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import RefineFrame from '@/components/product/RefineFrame';
-import SpecularButton from '@/components/ui/SpecularButton';
 import { products, getProductBySlug, getRelatedProducts, formatPrice } from '@/data/products';
 
 export function getStaticPaths() {
@@ -20,9 +18,7 @@ const related = getRelatedProducts(product.id, 4);
     <div class="container">
       <div class="product-detail-grid">
         <div class="product-detail-image">
-          <RefineFrame client:load status="complete" width={500} aspectRatio="4 / 5" radius={12} showStatus={false}>
-            <img src={product.image} alt={`${product.name} ${product.variant}`} width="400" height="500" />
-          </RefineFrame>
+          <img src={product.image} alt={`${product.name} ${product.variant}`} width="400" height="500" />
           {product.badge && <span class="product-badge">{product.badge}</span>}
         </div>
         <div class="product-detail-info">
@@ -61,12 +57,12 @@ const related = getRelatedProducts(product.id, 4);
             </div>
           </div>
           <div class="product-detail-actions">
-            <SpecularButton client:load size="lg" lineColor="#ccff00" baseColor="#004b1c" textColor="#ffffff" glow="1.2">
+            <button class="cta-btn cta-btn--primary" data-add-to-cart={product.id}>
               <i class="fas fa-shopping-bag"></i> Add to Cart
-            </SpecularButton>
-            <SpecularButton client:load size="lg" lineColor="#4caf50" baseColor="#002e11" textColor="#ffffff" glow="1">
+            </button>
+            <button class="cta-btn cta-btn--secondary" data-wishlist-toggle={product.id}>
               <i class="fas fa-heart"></i> Wishlist
-            </SpecularButton>
+            </button>
           </div>
           <div class="product-detail-stock">
             {product.stock > 0 ? (
@@ -127,6 +123,33 @@ const related = getRelatedProducts(product.id, 4);
   .related-product-card img { border-radius: 12px; }
   .related-product-card h3 { font-size: 0.9rem; margin-top: 8px; }
   .related-product-card p { color: #004b1c; font-weight: 600; }
+
+  .cta-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #fff;
+    background: #004b1c;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+  }
+  .cta-btn--secondary {
+    background: #002e11;
+  }
+  .cta-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 18px rgba(204, 255, 0, 0.4);
+  }
+  .cta-btn:active { transform: scale(0.97); }
+
   @media (max-width: 768px) {
     .product-detail-grid { grid-template-columns: 1fr; }
     .related-products .products-grid { grid-template-columns: repeat(2, 1fr); }
