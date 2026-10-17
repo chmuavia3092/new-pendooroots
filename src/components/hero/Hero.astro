@@ -3,6 +3,7 @@ import type { HeroContent } from '@/data/content';
 import HeroBottle from './HeroBottle.astro';
 import HeroStats from './HeroStats.astro';
 import HeroCTA from './HeroCTA.astro';
+import Grainient from './Grainient';
 
 interface Props {
   content: HeroContent;
@@ -12,30 +13,9 @@ const { content } = Astro.props;
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero-grainient" data-grainient
-    data-color1="#ccff00"
-    data-color2="#004b1c"
-    data-color3="#002e11"
-    data-time-speed="0.2"
-    data-color-balance="0.02"
-    data-warp-strength="1.2"
-    data-warp-frequency="4.5"
-    data-warp-speed="1.8"
-    data-warp-amplitude="60"
-    data-blend-angle="15"
-    data-blend-softness="0.08"
-    data-rotationAmount="400"
-    data-noise-scale="2.5"
-    data-grain-amount="0.22"
-    data-grain-scale="10"
-    data-grain-animated="false"
-    data-contrast="1.6"
-    data-gamma="0.95"
-    data-saturation="2.0"
-    data-center-x="-0.1"
-    data-center-y="0.05"
-    data-zoom="0.85"
-  ></div>
+  <div class="hero-grainient">
+    <Grainient client:load />
+  </div>
 
   <div class="hero-content">
     <div class="hero-grid">
