@@ -443,7 +443,7 @@
 
 .product-card-image {
   position: relative;
-  padding: 20px;
+  padding: 12px;
   background: transparent;
   aspect-ratio: 1;
   display: flex;
@@ -453,8 +453,8 @@
 }
 
 .product-card-image img {
-  width: 75%;
-  height: 75%;
+  width: 90%;
+  height: 90%;
   object-fit: contain;
   margin: auto;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
