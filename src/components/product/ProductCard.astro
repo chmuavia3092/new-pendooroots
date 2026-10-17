@@ -2,6 +2,7 @@
 import type { Product } from '@/data/products';
 import { formatPrice } from '@/data/products';
 import BorderBeam from '@/components/ui/BorderBeam.astro';
+import RefineFrame from '@/components/product/RefineFrame';
 
 interface Props {
   product: Product;
@@ -15,31 +16,14 @@ const { product, index = 0 } = Astro.props;
   <a href={`/shop/${product.slug}`} class="product-card-link" aria-label={`View ${product.name} ${product.variant}`}>
     {product.badge ? (
       <BorderBeam duration={6} size={100} colorFrom="#ccff00" colorTo="#4caf50" class="border-beam-active">
-        <div class="product-card-image">
+        <RefineFrame client:visible status="complete" width={400} aspectRatio="1 / 1" radius={0} showStatus={false}>
           <img src={product.image} alt={`${product.name} ${product.variant}`} width="400" height="400" loading="lazy" decoding="async" />
-          <span class="product-badge">{product.badge}</span>
-          <div class="product-card-actions">
-            <button class="product-action-btn" data-wishlist-toggle={product.id} aria-label="Add to wishlist">
-              <i class="fas fa-heart" aria-hidden="true"></i>
-            </button>
-            <button class="product-action-btn" data-quick-view={product.id} aria-label="Quick view">
-              <i class="fas fa-eye" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>
+        </RefineFrame>
       </BorderBeam>
     ) : (
-      <div class="product-card-image">
+      <RefineFrame client:visible status="complete" width={400} aspectRatio="1 / 1" radius={0} showStatus={false}>
         <img src={product.image} alt={`${product.name} ${product.variant}`} width="400" height="400" loading="lazy" decoding="async" />
-        <div class="product-card-actions">
-          <button class="product-action-btn" data-wishlist-toggle={product.id} aria-label="Add to wishlist">
-            <i class="fas fa-heart" aria-hidden="true"></i>
-          </button>
-          <button class="product-action-btn" data-quick-view={product.id} aria-label="Quick view">
-            <i class="fas fa-eye" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
+      </RefineFrame>
     )}
     <div class="product-card-body">
       <div class="product-card-meta">

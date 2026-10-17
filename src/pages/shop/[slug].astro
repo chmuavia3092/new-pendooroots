@@ -1,0 +1,132 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import RefineFrame from '@/components/product/RefineFrame';
+import { products, getProductBySlug, getRelatedProducts, formatPrice } from '@/data/products';
+
+export function getStaticPaths() {
+  return products.map(p => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const product = getProductBySlug(slug!);
+if (!product) return Astro.redirect('/shop');
+
+const related = getRelatedProducts(product.id, 4);
+---
+
+<BaseLayout title={`${product.name} — PENDOOROOTS`} description={product.description}>
+  <section class="product-detail">
+    <div class="container">
+      <div class="product-detail-grid">
+        <div class="product-detail-image">
+          <RefineFrame client:load status="complete" width={500} aspectRatio="1 / 1" radius={12} showStatus={false}>
+            <img src={product.image} alt={`${product.name} ${product.variant}`} width="500" height="500" />
+          </RefineFrame>
+          {product.badge && <span class="product-badge">{product.badge}</span>}
+        </div>
+        <div class="product-detail-info">
+          <span class="product-detail-category">{product.collection}</span>
+          <h1 class="product-detail-name">{product.name}</h1>
+          <p class="product-detail-variant">{product.variant}</p>
+          <div class="product-detail-rating">
+            <span class="stars">{'★'.repeat(Math.round(product.rating))}{'☆'.repeat(5 - Math.round(product.rating))}</span>
+            <span class="review-count">({product.reviews} reviews)</span>
+          </div>
+          <div class="product-detail-price">
+            <span class="price-current">{formatPrice(product.price)}</span>
+            {product.oldPrice && <span class="price-old">{formatPrice(product.oldPrice)}</span>}
+          </div>
+          <p class="product-detail-desc">{product.description}</p>
+          <div class="product-detail-ingredients">
+            <h3>Ingredients</h3>
+            <ul>
+              {product.ingredients.map(i => <li>{i}</li>)}
+            </ul>
+          </div>
+          <div class="product-detail-benefits">
+            <h3>Benefits</h3>
+            <ul>
+              {product.benefits.map(b => <li>{b}</li>)}
+            </ul>
+          </div>
+          <div class="product-detail-howto">
+            <h3>How to Use</h3>
+            <p>{product.howToUse}</p>
+          </div>
+          <div class="product-detail-sizes">
+            <h3>Available Sizes</h3>
+            <div class="size-options">
+              {product.sizes.map(s => <span class="size-option">{s}</span>)}
+            </div>
+          </div>
+          <div class="product-detail-actions">
+            <button class="btn btn-primary btn-lg" data-add-to-cart={product.id}>
+              <i class="fas fa-shopping-bag"></i> Add to Cart
+            </button>
+            <button class="btn btn-outline btn-lg" data-wishlist-toggle={product.id}>
+              <i class="fas fa-heart"></i> Wishlist
+            </button>
+          </div>
+          <div class="product-detail-stock">
+            {product.stock > 0 ? (
+              <span class="in-stock"><i class="fas fa-check-circle"></i> In Stock ({product.stock} available)</span>
+            ) : (
+              <span class="out-of-stock"><i class="fas fa-times-circle"></i> Out of Stock</span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {related.length > 0 && (
+        <div class="related-products">
+          <h2 class="section-title">Related Products</h2>
+          <div class="products-grid">
+            {related.map((p, i) => (
+              <a href={`/shop/${p.slug}`} class="related-product-card">
+                <img src={p.image} alt={p.name} width="200" height="200" loading="lazy" />
+                <h3>{p.name}</h3>
+                <p>{formatPrice(p.price)}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .product-detail { padding: 60px 0; }
+  .product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .product-detail-image { position: relative; }
+  .product-detail-info { display: flex; flex-direction: column; gap: 16px; }
+  .product-detail-category { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; color: #4caf50; font-weight: 600; }
+  .product-detail-name { font-size: 2rem; font-weight: 700; color: #004b1c; }
+  .product-detail-variant { font-size: 1.1rem; color: #666; }
+  .product-detail-rating { display: flex; align-items: center; gap: 8px; }
+  .product-detail-price { display: flex; align-items: center; gap: 12px; }
+  .price-current { font-size: 1.5rem; font-weight: 700; color: #004b1c; }
+  .price-old { font-size: 1.1rem; color: #999; text-decoration: line-through; }
+  .product-detail-desc { line-height: 1.6; color: #444; }
+  .product-detail-ingredients h3, .product-detail-benefits h3, .product-detail-howto h3, .product-detail-sizes h3 { font-size: 1rem; font-weight: 600; color: #004b1c; margin-bottom: 8px; }
+  .product-detail-ingredients ul, .product-detail-benefits ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .product-detail-ingredients li, .product-detail-benefits li { background: #f0f5f1; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
+  .product-detail-howto p { line-height: 1.6; color: #444; }
+  .size-options { display: flex; gap: 8px; }
+  .size-option { padding: 8px 16px; border: 1px solid #004b1c; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+  .size-option:hover { background: #004b1c; color: #fff; }
+  .product-detail-actions { display: flex; gap: 12px; margin-top: 16px; }
+  .product-detail-stock { margin-top: 8px; }
+  .in-stock { color: #4caf50; }
+  .out-of-stock { color: #ef4444; }
+  .related-products { margin-top: 60px; }
+  .related-products .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 24px; }
+  .related-product-card { text-align: center; }
+  .related-product-card img { border-radius: 12px; }
+  .related-product-card h3 { font-size: 0.9rem; margin-top: 8px; }
+  .related-product-card p { color: #004b1c; font-weight: 600; }
+  @media (max-width: 768px) {
+    .product-detail-grid { grid-template-columns: 1fr; }
+    .related-products .products-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
