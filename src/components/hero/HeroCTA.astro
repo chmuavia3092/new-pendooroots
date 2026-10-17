@@ -11,11 +11,11 @@ const { cta1, cta2, class: className = '' } = Astro.props;
 ---
 
 <div class={`hero-actions ${className}`}>
-  <SpecularButton client:load size="lg" lineColor="#ccff00" baseColor="#004b1c" textColor="#ffffff">
+  <SpecularButton client:load size="lg" lineColor="#ccff00" baseColor="#000000" textColor="#ffffff">
     {cta1} <i class="fas fa-arrow-right" aria-hidden="true"></i>
   </SpecularButton>
 
-  <SpecularButton client:load size="lg" lineColor="#ccff00" baseColor="#0f2f17" textColor="#ffffff">
+  <SpecularButton client:load size="lg" lineColor="#ccff00" baseColor="#000000" textColor="#ffffff">
     {cta2} <i class="fas fa-play" aria-hidden="true"></i>
   </SpecularButton>
 </div>
