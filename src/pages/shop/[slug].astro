@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import RefineFrame from '@/components/product/RefineFrame';
+import SpecularButton from '@/components/ui/SpecularButton';
 import { products, getProductBySlug, getRelatedProducts, formatPrice } from '@/data/products';
 
 export function getStaticPaths() {
@@ -60,12 +61,12 @@ const related = getRelatedProducts(product.id, 4);
             </div>
           </div>
           <div class="product-detail-actions">
-            <button class="btn btn-primary btn-lg" data-add-to-cart={product.id}>
+            <SpecularButton client:load size="lg" lineColor="#ccff00" baseColor="#004b1c" textColor="#ffffff">
               <i class="fas fa-shopping-bag"></i> Add to Cart
-            </button>
-            <button class="btn btn-outline btn-lg" data-wishlist-toggle={product.id}>
+            </SpecularButton>
+            <SpecularButton client:load size="lg" lineColor="#ccff00" baseColor="#0f2f17" textColor="#ffffff">
               <i class="fas fa-heart"></i> Wishlist
-            </button>
+            </SpecularButton>
           </div>
           <div class="product-detail-stock">
             {product.stock > 0 ? (
