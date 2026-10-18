@@ -21,8 +21,18 @@ const { stats, class: className = '' } = Astro.props;
 </div>
 
 <script>
-  // Counter Animation - IntersectionObserver triggered count-up
-  // Tabular numbers for smooth counting
+  document.querySelectorAll('.hero-stat-value').forEach(el => {
+    const target = +el.dataset.count;
+    if (!target) return;
+    const dur = 2000;
+    const t0 = performance.now();
+    const step = now => {
+      const p = Math.min((now - t0) / dur, 1);
+      el.textContent = Math.floor(p * target).toLocaleString();
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
 </script>
 
 <style>
