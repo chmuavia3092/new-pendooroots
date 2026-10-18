@@ -64,13 +64,17 @@ const { content } = Astro.props;
     display: flex;
     align-items: center;
     overflow: hidden;
-    background: #002e11;
+    background: #004b1c;
   }
 
   .hero-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(160deg, #001a0a 0%, #002e11 25%, #004b1c 50%, #006b2a 75%, #004b1c 100%);
+    background:
+      radial-gradient(ellipse 80% 60% at 75% 30%, #006b2a 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 20% 70%, #003d15 0%, transparent 55%),
+      radial-gradient(ellipse 50% 50% at 50% 50%, #005a24 0%, transparent 70%),
+      linear-gradient(160deg, #001a0a 0%, #002e11 20%, #004b1c 50%, #006b2a 80%, #003d15 100%);
     z-index: 0;
   }
 
@@ -79,16 +83,15 @@ const { content } = Astro.props;
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 70% 50% at 75% 35%, rgba(76, 175, 80, 0.35), transparent),
-      radial-gradient(ellipse 50% 70% at 25% 65%, rgba(204, 255, 0, 0.12), transparent),
-      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0, 107, 42, 0.15), transparent);
+      radial-gradient(ellipse 40% 30% at 80% 20%, rgba(204, 255, 0, 0.15), transparent),
+      radial-gradient(ellipse 30% 40% at 15% 80%, rgba(76, 175, 80, 0.2), transparent);
   }
 
   .hero-gradient::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 100% 100% at 50% 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%);
+    background: radial-gradient(ellipse 120% 100% at 50% 0%, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
   }
 
   .hero-content {
