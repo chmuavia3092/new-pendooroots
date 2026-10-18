@@ -41,19 +41,17 @@ const { product, index = 0 } = Astro.props;
         </div>
       </div>
     )}
-    <div class="product-card-body">
-      <div class="product-card-meta">
-        <span class="product-card-category">{product.collection}</span>
-        <div class="product-card-rating">
-          <span class="stars">{'★'.repeat(Math.round(product.rating))}{'☆'.repeat(5 - Math.round(product.rating))}</span>
-          <span class="review-count">({product.reviews})</span>
-        </div>
-      </div>
+    <div class="product-card-info">
+      <div class="product-card-category">{product.collection}</div>
       <h3 class="product-card-name">{product.name}</h3>
       <p class="product-card-variant">{product.variant}</p>
+      <div class="product-card-rating">
+        <span class="stars">{'★'.repeat(Math.round(product.rating))}{'☆'.repeat(5 - Math.round(product.rating))}</span>
+        <span>({product.reviews})</span>
+      </div>
       <div class="product-card-price">
-        <span class="price-current">{formatPrice(product.price)}</span>
-        {product.oldPrice && <span class="price-old">{formatPrice(product.oldPrice)}</span>}
+        <span class="product-price-current">{formatPrice(product.price)}</span>
+        {product.oldPrice && <span class="product-price-old">{formatPrice(product.oldPrice)}</span>}
       </div>
     </div>
   </a>
