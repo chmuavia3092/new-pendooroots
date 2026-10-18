@@ -70,7 +70,7 @@ const { content } = Astro.props;
   .hero-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #002e11 0%, #004b1c 40%, #006b2a 70%, #004b1c 100%);
+    background: linear-gradient(160deg, #001a0a 0%, #002e11 25%, #004b1c 50%, #006b2a 75%, #004b1c 100%);
     z-index: 0;
   }
 
@@ -79,8 +79,16 @@ const { content } = Astro.props;
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(76, 175, 80, 0.25), transparent),
-      radial-gradient(ellipse 60% 80% at 30% 60%, rgba(204, 255, 0, 0.08), transparent);
+      radial-gradient(ellipse 70% 50% at 75% 35%, rgba(76, 175, 80, 0.35), transparent),
+      radial-gradient(ellipse 50% 70% at 25% 65%, rgba(204, 255, 0, 0.12), transparent),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0, 107, 42, 0.15), transparent);
+  }
+
+  .hero-gradient::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 100% 100% at 50% 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%);
   }
 
   .hero-content {
