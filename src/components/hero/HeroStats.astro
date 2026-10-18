@@ -11,9 +11,9 @@ interface Props {
 const { stats, class: className = '' } = Astro.props;
 ---
 
-<div class="hero-stats {className}">
+<div class={`hero-stats ${className}`}>
   {stats.map((stat, i) => (
-    <div class="hero-stat reveal reveal-delay-{i + 1}">
+    <div class={`hero-stat reveal reveal-delay-${i + 1}`}>
       <div class="hero-stat-value" data-count={stat.value}>0</div>
       <div class="hero-stat-label">{stat.suffix ? stat.value + stat.suffix : stat.label}</div>
     </div>
