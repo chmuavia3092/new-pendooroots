@@ -1,5 +1,6 @@
 ---
 // HeroBottle — Pure CSS 3D float animation (no client hydration needed)
+// Glow pulses via opacity (GPU-cheap); only `transform` is continuously animated.
 ---
 
 <div class="hero-bottle-wrapper">
@@ -17,6 +18,7 @@
 
 <style>
   .hero-bottle-wrapper {
+    position: relative;
     width: 100%;
     display: flex;
     align-items: center;
@@ -25,53 +27,68 @@
     perspective: 1000px;
   }
 
+  /* Soft lime halo behind the bottle — pulses on opacity only (cheap) */
+  .hero-bottle-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 340px;
+    height: 340px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(204, 255, 0, 0.22) 0%, transparent 70%);
+    filter: blur(30px);
+    z-index: -1;
+    animation: heroGlow 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
   .hero-bottle {
     width: auto;
     height: 420px;
     max-width: 100%;
     object-fit: contain;
     border-radius: var(--radius-xl);
-    animation:
-      heroFloatRotate 8s ease-in-out infinite,
-      heroSpin 20s linear infinite;
-    filter:
-      drop-shadow(0 30px 60px rgba(0, 0, 0, 0.4))
-      drop-shadow(0 0 80px rgba(204, 255, 0, 0.15));
+    animation: heroFloatRotate 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.4));
     transform-style: preserve-3d;
-    perspective: 1000px;
-    will-change: transform, filter;
+    will-change: transform;
   }
 
   @keyframes heroFloatRotate {
-    0%   { transform: translateY(0px)   rotateY(0deg)   rotateX(0deg)   scale(1); }
-    15%  { transform: translateY(-18px) rotateY(8deg)   rotateX(3deg)   scale(1.02); }
-    30%  { transform: translateY(-8px)  rotateY(-5deg)  rotateX(-2deg)  scale(0.99); }
-    50%  { transform: translateY(-25px) rotateY(12deg)  rotateX(4deg)   scale(1.03); }
-    70%  { transform: translateY(-12px) rotateY(-8deg)  rotateX(-3deg)  scale(1.01); }
-    85%  { transform: translateY(-20px) rotateY(5deg)   rotateX(2deg)   scale(1.02); }
-    100% { transform: translateY(0px)   rotateY(0deg)   rotateX(0deg)   scale(1); }
+    0%   { transform: translateY(0px)    rotateY(0deg)   rotateX(0deg)   scale(1); }
+    15%  { transform: translateY(-16px)  rotateY(8deg)   rotateX(3deg)   scale(1.02); }
+    30%  { transform: translateY(-7px)   rotateY(-5deg)  rotateX(-2deg)  scale(0.99); }
+    50%  { transform: translateY(-22px)  rotateY(12deg)  rotateX(4deg)   scale(1.03); }
+    70%  { transform: translateY(-11px)  rotateY(-8deg)  rotateX(-3deg)  scale(1.01); }
+    85%  { transform: translateY(-18px)  rotateY(5deg)   rotateX(2deg)   scale(1.02); }
+    100% { transform: translateY(0px)    rotateY(0deg)   rotateX(0deg)   scale(1); }
   }
 
-  @keyframes heroSpin {
-    0%   { filter: drop-shadow(0 30px 60px rgba(0,0,0,0.4)) drop-shadow(0 0 80px rgba(204,255,0,0.15)); }
-    25%  { filter: drop-shadow(0 40px 70px rgba(0,0,0,0.5)) drop-shadow(0 0 100px rgba(204,255,0,0.25)); }
-    50%  { filter: drop-shadow(0 35px 65px rgba(0,0,0,0.45)) drop-shadow(0 0 90px rgba(204,255,0,0.2)); }
-    75%  { filter: drop-shadow(0 45px 75px rgba(0,0,0,0.5)) drop-shadow(0 0 110px rgba(204,255,0,0.28)); }
-    100% { filter: drop-shadow(0 30px 60px rgba(0,0,0,0.4)) drop-shadow(0 0 80px rgba(204,255,0,0.15)); }
+  @keyframes heroGlow {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 1; }
   }
 
   @media (max-width: 1024px) {
     .hero-bottle { max-width: 400px; }
+    .hero-bottle-wrapper::before { width: 280px; height: 280px; }
   }
 
   @media (max-width: 768px) {
     .hero-bottle { max-width: 320px; }
+    .hero-bottle-wrapper::before { width: 220px; height: 220px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero-bottle {
       animation: none !important;
-      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.4));
+      filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.4));
+    }
+    .hero-bottle-wrapper::before {
+      animation: none !important;
+      opacity: 0.75;
     }
   }
 </style>

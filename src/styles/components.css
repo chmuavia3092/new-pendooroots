@@ -457,11 +457,13 @@
   height: 90%;
   object-fit: contain;
   margin: auto;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 320ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.product-card:hover .product-card-image img {
-  transform: scale(1.08) rotate(3deg);
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover .product-card-image img {
+    transform: scale(1.05) rotate(2deg);
+  }
 }
 
 .product-card-actions {
@@ -1221,8 +1223,10 @@
 /* ── REVEAL ANIMATION ── */
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(24px);
+  transition:
+    opacity 420ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 560ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .reveal.revealed {
@@ -1230,10 +1234,10 @@
   transform: translateY(0);
 }
 
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-1 { transition-delay: 0.06s; }
+.reveal-delay-2 { transition-delay: 0.12s; }
+.reveal-delay-3 { transition-delay: 0.18s; }
+.reveal-delay-4 { transition-delay: 0.24s; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal {
