@@ -124,8 +124,10 @@ const { content } = Astro.props;
 
   .hero-title .accent {
     color: #ccff00;
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
+    font-family: var(--font-family-script);
+    font-style: normal;
+    font-size: 1.15em;
+    line-height: 0.9;
   }
 
   .hero-subtitle {
@@ -145,7 +147,7 @@ const { content } = Astro.props;
   .hero-product-showcase {
     position: relative;
     width: 100%;
-    max-width: 420px;
+    max-width: 500px;
     aspect-ratio: 1;
     display: flex;
     align-items: center;
@@ -213,7 +215,7 @@ const { content } = Astro.props;
     .hero-tag { margin: 0 auto; }
     .hero-subtitle { margin: 0 auto; }
     .hero-right { order: -1; }
-    .hero-product-showcase { max-width: 300px; }
+    .hero-product-showcase { max-width: 380px; }
     .hero-stats {
       justify-content: center;
       gap: 32px;
