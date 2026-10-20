@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/hero/Hero.astro';
 import ProductCard from '@/components/product/ProductCard.astro';
 import BorderBeam from '@/components/ui/BorderBeam.astro';
+import SiteButton from '@/components/ui/SiteButton.astro';
 import { products, getBestSellers, getFeaturedProducts, getProductsByCollection } from '@/data/products';
 import { heroContent, featuresContent, testimonialsContent, collectionsContent } from '@/data/content';
 ---
@@ -21,8 +22,8 @@ import { heroContent, featuresContent, testimonialsContent, collectionsContent }
       </div>
       <div class="features-grid">
         {featuresContent.map((f, i) => (
-          <div class="feature-card reveal reveal-delay-{i+1}">
-            <div class="feature-icon"><i class="fas {f.icon}"></i></div>
+          <div class={`feature-card reveal reveal-delay-${i + 1}`}>
+            <div class="feature-icon"><i class={`fas ${f.icon}`}></i></div>
             <h3 class="feature-title">{f.title}</h3>
             <p class="feature-desc">{f.desc}</p>
           </div>
@@ -45,17 +46,9 @@ import { heroContent, featuresContent, testimonialsContent, collectionsContent }
         ))}
       </div>
       <div style="text-align:center; margin-top:48px;" class="reveal">
-        <a href="/shop" class="btn btn-primary btn-lg"
-           data-border-glow
-           data-glow-color="120 100 50"
-           data-background-color="#004b1c"
-           data-border-radius="999"
-           data-glow-radius="30"
-           data-glow-intensity="1"
-           data-cone-spread="25"
-           data-colors="#ccff00,#4caf50,#2e7d32">
+        <SiteButton href="/shop" size="lg">
           View All Products <i class="fas fa-arrow-right"></i>
-        </a>
+        </SiteButton>
       </div>
     </div>
   </section>
@@ -157,15 +150,7 @@ import { heroContent, featuresContent, testimonialsContent, collectionsContent }
               <div class="about-stat-label">Products</div>
             </div>
           </div>
-          <a href="/about" class="btn btn-primary"
-             data-border-glow
-             data-glow-color="120 100 50"
-             data-background-color="#004b1c"
-             data-border-radius="999"
-             data-glow-radius="30"
-             data-glow-intensity="1"
-             data-cone-spread="25"
-             data-colors="#ccff00,#4caf50,#2e7d32">Read Our Story <i class="fas fa-arrow-right"></i></a>
+          <SiteButton href="/about" size="lg">Read Our Story <i class="fas fa-arrow-right"></i></SiteButton>
         </div>
       </div>
     </div>
@@ -180,15 +165,7 @@ import { heroContent, featuresContent, testimonialsContent, collectionsContent }
         <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Welcome to the PendooRoots family!', 'success'); this.reset();">
           <label class="sr-only" for="nl_email">Email address</label>
           <input id="nl_email" name="email" type="email" placeholder="Enter your email…" autocomplete="email" required />
-          <button type="submit"
-             data-border-glow
-             data-glow-color="120 100 50"
-             data-background-color="#ccff00"
-             data-border-radius="999"
-             data-glow-radius="25"
-             data-glow-intensity="1"
-             data-cone-spread="25"
-             data-colors="#ccff00,#4caf50,#2e7d32">Subscribe</button>
+          <SiteButton type="submit" size="lg">Subscribe</SiteButton>
         </form>
       </div>
     </BorderBeam>

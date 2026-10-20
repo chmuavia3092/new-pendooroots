@@ -151,6 +151,7 @@ export default function SpecularButton({
   onClick,
   className = '',
   type = 'button',
+  href,
   style,
   ...rest
 }) {
@@ -347,10 +348,13 @@ export default function SpecularButton({
 
   useEffect(() => { wakeRef.current?.(); });
 
+  const Tag = href ? 'a' : 'button';
+
   return (
-    <button
+    <Tag
       ref={buttonRef}
-      type={type}
+      href={href}
+      type={href ? undefined : type}
       disabled={disabled}
       onClick={onClick}
       className={`specular-button specular-button--${size}${className ? ` ${className}` : ''}`}
@@ -366,6 +370,6 @@ export default function SpecularButton({
     >
       <canvas ref={canvasRef} className="specular-button__light" aria-hidden="true" />
       <span className="specular-button__label">{children}</span>
-    </button>
+    </Tag>
   );
 }

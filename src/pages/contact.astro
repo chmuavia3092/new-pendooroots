@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteButton from '@/components/ui/SiteButton.astro';
 ---
 
 <BaseLayout title="Contact — PENDOOROOTS" description="Get in touch with PendooRoots — we'd love to hear from you.">
@@ -67,15 +68,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
               <label for="message">Message</label>
               <textarea id="message" name="message" rows="5" placeholder="Write your message..." required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-full"
-               data-border-glow
-               data-glow-color="120 100 50"
-               data-background-color="#004b1c"
-               data-border-radius="999"
-               data-glow-radius="30"
-               data-glow-intensity="1"
-               data-cone-spread="25"
-               data-colors="#ccff00,#4caf50,#2e7d32">Send Message</button>
+            <SiteButton type="submit" size="lg" full>Send Message</SiteButton>
           </form>
         </div>
       </div>

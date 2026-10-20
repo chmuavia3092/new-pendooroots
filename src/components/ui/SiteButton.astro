@@ -1,0 +1,55 @@
+---
+// SiteButton — site-wide CTA. Same specular style as the hero buttons.
+import SpecularButton from '@/components/ui/SpecularButton';
+
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary';
+  full?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  href,
+  type = 'button',
+  size = 'lg',
+  variant = 'primary',
+  full = false,
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const baseColor = variant === 'primary' ? '#004b1c' : '#0f2f17';
+const isPrimary = variant === 'primary';
+---
+
+<SpecularButton
+  client:load
+  href={href}
+  type={type}
+  size={size}
+  radius={999}
+  lineColor="#ccff00"
+  baseColor={baseColor}
+  textColor="#ffffff"
+  intensity={isPrimary ? 1 : 0.9}
+  shineSize={isPrimary ? 12 : 10}
+  shineFade={isPrimary ? 40 : 45}
+  thickness={isPrimary ? 1.2 : 1}
+  speed={isPrimary ? 0.35 : 0.4}
+  proximity={isPrimary ? 250 : 200}
+  className={`${full ? 'btn-full' : ''} ${className}`.trim()}
+  {...rest}
+>
+  <slot />
+</SpecularButton>
+
+<style>
+  :global(.specular-button.btn-full) {
+    width: 100%;
+    justify-content: center;
+  }
+</style>
