@@ -42,15 +42,46 @@ function initTheme(): void {
   }
 }
 
-// Navbar scroll effect
+// Smart Navbar — changes theme based on section underneath
 function initNavbarScroll(): void {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
 
+  // Sections that should make navbar dark (light backgrounds)
+  const lightSections = document.querySelectorAll('[data-navbar-theme="light"]');
+  const darkSections = document.querySelectorAll('[data-navbar-theme="dark"]');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (entry.target.hasAttribute('data-navbar-theme')) {
+            const theme = entry.target.getAttribute('data-navbar-theme');
+            navbar.classList.toggle('navbar--light', theme === 'light');
+            navbar.classList.toggle('navbar--dark', theme === 'dark');
+          }
+        }
+      });
+    },
+    {
+      root: null,
+      rootMargin: '-72px 0px 0px 0px', // Account for navbar height (72px)
+      threshold: 0.1
+    }
+  );
+
+  lightSections.forEach(section => observer.observe(section));
+  darkSections.forEach(section => observer.observe(section));
+
+  // Fallback for pages without data-navbar-theme sections
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
+    if (!document.querySelector('[data-navbar-theme]')) {
+      document.getElementById('navbar')?.classList.toggle('scrolled', window.scrollY > 50);
+    }
   });
 }
+
+
 
 // Mobile menu toggle
 function initMobileMenu(): void {
