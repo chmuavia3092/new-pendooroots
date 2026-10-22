@@ -1,5 +1,5 @@
 ---
-// SiteButton â€” site-wide CTA. Same specular style as the hero buttons.
+// SiteButton — site-wide CTA. Same specular style as the hero buttons.
 import SpecularButton from '@/components/ui/SpecularButton';
 
 interface Props {
@@ -24,6 +24,7 @@ const {
 
 const baseColor = variant === 'primary' ? '#004b1c' : '#0f2f17';
 const isPrimary = variant === 'primary';
+const textColor = variant === 'primary' ? '#000000' : '#1a1a2e';
 ---
 
 <SpecularButton
@@ -34,7 +35,7 @@ const isPrimary = variant === 'primary';
   radius={999}
   lineColor="#ccff00"
   baseColor={baseColor}
-  textColor="#ffffff"
+  textColor={textColor}
   intensity={isPrimary ? 1 : 0.9}
   shineSize={isPrimary ? 12 : 10}
   shineFade={isPrimary ? 40 : 45}
