@@ -1,4 +1,32 @@
-﻿/* Light navbar — for light sections (white content) */
+﻿/* ── NAVBAR ── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 0 24px;
+  height: 72px;
+  transition: background 0.4s ease, box-shadow 0.4s ease, color 0.4s ease;
+}
+
+/* Default: transparent navbar for dark sections (hero, footer) */
+.navbar:not(.navbar--light) {
+  background: transparent;
+  color: #ffffff;
+}
+
+.navbar:not(.navbar--light) .logo-text,
+.navbar:not(.navbar--light) .nav-link,
+.navbar:not(.navbar--light) .nav-icon-btn,
+.navbar:not(.navbar--light) .hamburger span {
+  color: #ffffff;
+}
+
+.navbar:not(.navbar--light) .nav-link:hover { color: #ccff00; }
+.navbar:not(.navbar--light) .nav-icon-btn:hover { color: #ccff00; }
+
+/* Light navbar — for light sections (white content) */
 .navbar.navbar--light {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
@@ -58,5 +86,4 @@
 [data-theme="dark"] .navbar.scrolled .hamburger span {
   color: #ffffff !important;
 }
-
 
