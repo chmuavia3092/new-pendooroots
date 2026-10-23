@@ -1,22 +1,4 @@
-﻿/* Smart Navbar theme variants */
-.navbar {
-  transition: background 0.4s ease, box-shadow 0.4s ease, color 0.4s ease;
-}
-
-/* Light navbar — for dark sections (hero, footer) */
-.navbar:not(.navbar--light) {
-  background: transparent;
-  color: #ffffff;
-}
-
-.navbar:not(.navbar--light) .logo-text,
-.navbar:not(.navbar--light) .nav-link,
-.navbar:not(.navbar--light) .nav-icon-btn,
-.navbar:not(.navbar--light) .hamburger span {
-  color: #ffffff;
-}
-
-/* Light navbar — for light sections (white content) */
+﻿/* Light navbar — for light sections (white content) */
 .navbar.navbar--light {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
@@ -32,13 +14,8 @@
   color: #000000;
 }
 
-.navbar.navbar--light .nav-link:hover {
-  color: #004b1c;
-}
-
-.navbar.navbar--light .nav-icon-btn:hover {
-  color: #004b1c;
-}
+.navbar.navbar--light .nav-link:hover { color: #004b1c; }
+.navbar.navbar--light .nav-icon-btn:hover { color: #004b1c; }
 
 /* Dark navbar — for dark sections */
 .navbar.navbar--dark {
@@ -81,3 +58,5 @@
 [data-theme="dark"] .navbar.scrolled .hamburger span {
   color: #ffffff !important;
 }
+
+
