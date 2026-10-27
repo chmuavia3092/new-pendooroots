@@ -1,12 +1,12 @@
----
-// HeroBottle — Pure CSS 3D float animation (no client hydration needed)
+﻿---
+// HeroBottle â€” Pure CSS 3D float animation (no client hydration needed)
 // Glow pulses via opacity (GPU-cheap); only `transform` is continuously animated.
 ---
 
 <div class="hero-bottle-wrapper">
   <img
-    src="/images/lemoo-washer.png"
-    alt="LEMOO Washer dish wash bottle — Make Every Dish Shine"
+    src="/images/lemoo-washer-large.jpg"
+    alt="LEMOO Washer dish wash bottle â€” Make Every Dish Shine"
     width="800"
     height="800"
     loading="eager"
@@ -27,7 +27,7 @@
     perspective: 1000px;
   }
 
-  /* Soft lime halo behind the bottle — pulses on opacity only (cheap) */
+  /* Soft lime halo behind the bottle â€” pulses on opacity only (cheap) */
   .hero-bottle-wrapper::before {
     content: '';
     position: absolute;
@@ -72,12 +72,12 @@
   }
 
   @media (max-width: 1024px) {
-    .hero-bottle { max-width: 440px; }
+    .hero-bottle { max-width: 480px; }
     .hero-bottle-wrapper::before { width: 300px; height: 300px; }
   }
 
   @media (max-width: 768px) {
-    .hero-bottle { max-width: 340px; height: 380px; }
+    .hero-bottle { max-width: 360px; height: 420px; }
     .hero-bottle-wrapper::before { width: 240px; height: 240px; }
   }
 
@@ -92,3 +92,5 @@
     }
   }
 </style>
+
+
