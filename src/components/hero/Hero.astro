@@ -1,4 +1,4 @@
----
+﻿---
 import type { HeroContent } from '@/data/content';
 import HeroBottle from './HeroBottle.astro';
 import HeroStats from './HeroStats.astro';
@@ -67,13 +67,16 @@ const { content } = Astro.props;
     display: flex;
     align-items: center;
     overflow: hidden;
-    background: #002e11;
+    background: linear-gradient(135deg, #001a0a 0%, #002e11 30%, #004b1c 60%, #003d15 100%);
+    background-size: 200% 200%;
+    animation: heroGradient 8s ease infinite;
   }
 
   .hero-grainient {
     position: absolute;
     inset: 0;
     z-index: 0;
+    opacity: 0.7;
   }
 
   .hero-content {
@@ -183,6 +186,12 @@ const { content } = Astro.props;
     50% { opacity: 1; }
   }
 
+  @keyframes heroGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
   .hero-stats {
     display: flex;
     gap: 48px;
@@ -219,7 +228,7 @@ const { content } = Astro.props;
     .hero-product-showcase { max-width: 380px; }
     .hero-stats {
       justify-content: center;
-      gap: 32px;
+      gap: 24px;
     }
     .hero-stat {
       text-align: center;
@@ -241,5 +250,6 @@ const { content } = Astro.props;
 
   @media (prefers-reduced-motion: reduce) {
     .hero-scroll-line { animation: none; }
+    .hero-gradient { animation: none; }
   }
 </style>
