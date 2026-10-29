@@ -42,7 +42,7 @@ function initTheme(): void {
   }
 }
 
-// Smart Navbar — changes theme based on section underneath
+// Smart Navbar ï¿½ changes theme based on section underneath
 function initNavbarScroll(): void {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
@@ -51,17 +51,29 @@ function initNavbarScroll(): void {
   const lightSections = document.querySelectorAll('[data-navbar-theme="light"]');
   const darkSections = document.querySelectorAll('[data-navbar-theme="dark"]');
 
+  // Tracks which themed sections currently sit under the navbar strip.
+  // When none do (e.g. back at the hero), both classes are removed so the
+  // navbar falls back to its transparent default instead of keeping the
+  // last-entered theme.
+  const activeThemes = new Map<Element, string>();
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
+        const theme = entry.target.getAttribute('data-navbar-theme');
+        if (!theme) return;
         if (entry.isIntersecting) {
-          if (entry.target.hasAttribute('data-navbar-theme')) {
-            const theme = entry.target.getAttribute('data-navbar-theme');
-            navbar.classList.toggle('navbar--light', theme === 'light');
-            navbar.classList.toggle('navbar--dark', theme === 'dark');
-          }
+          activeThemes.set(entry.target, theme);
+        } else {
+          activeThemes.delete(entry.target);
         }
       });
+
+      let current: string | undefined;
+      activeThemes.forEach(t => { current = t; });
+
+      navbar.classList.toggle('navbar--light', current === 'light');
+      navbar.classList.toggle('navbar--dark', current === 'dark');
     },
     {
       root: null,
