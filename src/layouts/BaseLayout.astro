@@ -293,7 +293,9 @@ const fullOgImage = new URL(ogImage, siteUrl).href;
   </footer>
 
   <!-- PAGE SCRIPTS -->
-  <script type="module" src="/src/scripts/main.ts"></script>
+  <script>
+    import '../scripts/main.ts';
+  </script>
   <script is:inline src="/scripts/border-glow.js"></script>
 </body>
 </html>
