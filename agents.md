@@ -285,15 +285,20 @@ npm run lint && npm run format && npm run typecheck && npm run build
 
 ## Deployment Workflow
 
-**After every change**, commit and push to trigger Vercel auto-deploy:
+**After every change**, commit, push to **BOTH** remotes, and deploy to **BOTH** Vercel projects:
 
 ```bash
-git add -A && git commit -m "feat: <description>" && git push origin master
+git add -A && git commit -m "feat: <description>"
+git push origin master        # → pendooroots-site repo
+git push new-origin master    # → new-pendooroots repo
+
+vercel link --project pendooroots-site --yes && vercel --yes --prod   # → https://pendooroots-site.vercel.app
+vercel link --project new-pendooroots --yes && vercel --yes --prod    # → https://new-pendooroots.vercel.app
 ```
 
-- Remote: `origin` → `https://github.com/chmuavia3092/pendooroots-site.git`
+- Remotes: `origin` → `https://github.com/chmuavia3092/pendooroots-site.git`, `new-origin` → `https://github.com/chmuavia3092/new-pendooroots.git`
 - Branch: `master`
-- Vercel auto-deploys on push to `master`
+- **Both live sites must always be redeployed together**: https://pendooroots-site.vercel.app AND https://new-pendooroots.vercel.app
 - Never commit `node_modules/`, `dist/`, `.astro/`, or browser profile data
 
 ---
