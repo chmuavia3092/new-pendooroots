@@ -9,6 +9,25 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Cart & wishlist store (localStorage-persisted, pub/sub synced)
+import {
+  addToCart,
+  setCartQty,
+  removeFromCart,
+  getCart,
+  getCartItems,
+  cartCount,
+  cartSubtotal,
+  shippingCost,
+  getWishlist,
+  getWishlistItems,
+  isInWishlist,
+  toggleWishlist,
+  removeFromWishlist,
+  getProduct,
+  onStoreChange,
+} from '@/store';
+
 // Dynamic imports for optional components (non-blocking)
 import('@/components/hero/HeroBottle').catch(() => {});
 import('@/components/hero/HeroGrainient').catch(() => {});
@@ -158,46 +177,287 @@ function initSearch(): void {
   });
 }
 
-// Cart sidebar
+// ── Commerce: cart + wishlist ────────────────────────────────────────
+const money = (n: number): string => 'Rs.' + new Intl.NumberFormat('en-PK').format(n);
+
+function updateBadges(): void {
+  const bagCount = cartCount();
+  const wishCount = getWishlist().length;
+  const cartBadge = document.getElementById('cartBadge');
+  const wishBadge = document.getElementById('wishlistBadge');
+  if (cartBadge) {
+    cartBadge.textContent = String(bagCount);
+    cartBadge.classList.toggle('visible', bagCount > 0);
+  }
+  if (wishBadge) {
+    wishBadge.textContent = String(wishCount);
+    wishBadge.classList.toggle('visible', wishCount > 0);
+  }
+}
+
+function syncWishlistButtons(): void {
+  document.querySelectorAll<HTMLElement>('[data-wishlist-toggle]').forEach((btn) => {
+    const id = Number(btn.getAttribute('data-wishlist-toggle'));
+    const wishlisted = isInWishlist(id);
+    btn.classList.toggle('wishlisted', wishlisted);
+    btn.setAttribute('aria-label', wishlisted ? 'Remove from wishlist' : 'Add to wishlist');
+    btn.setAttribute('aria-pressed', String(wishlisted));
+  });
+}
+
+function showToast(message: string, type = 'success'): void {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  const icon =
+    type === 'error' ? 'fa-times-circle' : type === 'info' ? 'fa-info-circle' : 'fa-check-circle';
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const ico = document.createElement('i');
+  ico.className = `fas ${icon}`;
+  ico.setAttribute('aria-hidden', 'true');
+  const text = document.createElement('span');
+  text.textContent = message;
+  toast.append(ico, text);
+  container.appendChild(toast);
+  window.setTimeout(() => {
+    toast.classList.add('toast-exit');
+    window.setTimeout(() => toast.remove(), 350);
+  }, 2600);
+}
+
+function renderCartSidebar(): void {
+  const wrap = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+  if (!wrap) return;
+  const items = getCartItems();
+
+  if (!items.length) {
+    wrap.innerHTML =
+      '<div class="cart-empty"><i class="fas fa-shopping-bag" aria-hidden="true"></i><p>Your bag is empty</p></div>';
+    if (footer) footer.style.display = 'none';
+    return;
+  }
+  if (footer) footer.style.display = '';
+
+  wrap.innerHTML = items
+    .map(
+      ({ product: p, qty }) => `
+    <div class="cart-item-sidebar">
+      <div class="cart-item-sidebar-img"><img src="${p.image}" alt="${p.name}" width="80" height="80" loading="lazy" /></div>
+      <div class="cart-item-sidebar-info">
+        <div class="cart-item-sidebar-name">${p.name} · ${p.variant}</div>
+        <div class="cart-item-sidebar-price">${money(p.price * qty)}</div>
+        <div class="cart-item-sidebar-qty">
+          <button type="button" data-cart-dec="${p.id}" aria-label="Decrease quantity of ${p.name}">&minus;</button>
+          <span>${qty}</span>
+          <button type="button" data-cart-inc="${p.id}" aria-label="Increase quantity of ${p.name}">+</button>
+        </div>
+      </div>
+      <button type="button" class="cart-item-remove" data-cart-remove="${p.id}" aria-label="Remove ${p.name} from bag">
+        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+      </button>
+    </div>`
+    )
+    .join('');
+
+  const subtotal = cartSubtotal();
+  const shipping = shippingCost(subtotal);
+  const subtotalEl = document.getElementById('cartSubtotal');
+  const shippingEl = document.getElementById('cartShipping');
+  if (subtotalEl) subtotalEl.textContent = money(subtotal);
+  if (shippingEl) shippingEl.textContent = shipping > 0 ? money(shipping) : 'Free';
+
+  // Checkout = WhatsApp order (brand rule: mock checkout, no payment gateway)
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  if (checkoutBtn) {
+    const lines = items.map(
+      ({ product: p, qty }) => `${p.name} ${p.variant} × ${qty} = ${money(p.price * qty)}`
+    );
+    const message = [
+      'Hello PENDOOROOTS! I would like to place an order:',
+      '',
+      ...lines,
+      '',
+      `Subtotal: ${money(subtotal)}`,
+      `Shipping: ${shipping > 0 ? money(shipping) : 'Free'}`,
+      `Total: ${money(subtotal + shipping)}`,
+    ].join('\n');
+    checkoutBtn.setAttribute(
+      'href',
+      `https://wa.me/923474736347?text=${encodeURIComponent(message)}`
+    );
+  }
+}
+
+function renderWishlistSidebar(): void {
+  const wrap = document.getElementById('wishlistItems');
+  const footer = document.getElementById('wishlistFooter');
+  if (!wrap) return;
+  const items = getWishlistItems();
+
+  if (!items.length) {
+    wrap.innerHTML =
+      '<div class="cart-empty"><i class="fas fa-heart" aria-hidden="true"></i><p>Your wishlist is empty</p></div>';
+    if (footer) footer.style.display = 'none';
+    return;
+  }
+  if (footer) footer.style.display = '';
+
+  wrap.innerHTML = items
+    .map(
+      (p) => `
+    <div class="cart-item-sidebar">
+      <div class="cart-item-sidebar-img"><img src="${p.image}" alt="${p.name}" width="80" height="80" loading="lazy" /></div>
+      <div class="cart-item-sidebar-info">
+        <div class="cart-item-sidebar-name">${p.name} · ${p.variant}</div>
+        <div class="cart-item-sidebar-price">${money(p.price)}</div>
+        <button type="button" class="wishlist-move-btn" data-wish-to-cart="${p.id}">
+          <i class="fas fa-shopping-bag" aria-hidden="true"></i> Add to bag
+        </button>
+      </div>
+      <button type="button" class="cart-item-remove" data-wish-remove="${p.id}" aria-label="Remove ${p.name} from wishlist">
+        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+      </button>
+    </div>`
+    )
+    .join('');
+}
+
+/* sidebar open/close (module scope — shared by nav toggles & action handlers) */
+
+function openCartSidebar(): void {
+  document.getElementById('cartSidebar')?.classList.add('active');
+  document.getElementById('cartOverlay')?.classList.add('active');
+  renderCartSidebar();
+}
+
+function closeCartSidebar(): void {
+  document.getElementById('cartSidebar')?.classList.remove('active');
+  document.getElementById('cartOverlay')?.classList.remove('active');
+}
+
+function openWishlistSidebar(): void {
+  document.getElementById('wishlistSidebar')?.classList.add('active');
+  document.getElementById('wishlistOverlay')?.classList.add('active');
+  renderWishlistSidebar();
+}
+
+function closeWishlistSidebar(): void {
+  document.getElementById('wishlistSidebar')?.classList.remove('active');
+  document.getElementById('wishlistOverlay')?.classList.remove('active');
+}
+
 function initCart(): void {
-  const cartToggle = document.getElementById('cartToggle');
-  const cartClose = document.getElementById('cartClose');
-  const cartOverlay = document.getElementById('cartOverlay');
-  const cartSidebar = document.getElementById('cartSidebar');
-
-  const openCart = () => {
-    cartSidebar?.classList.add('active');
-    cartOverlay?.classList.add('active');
-    renderCartSidebar();
-  };
-
-  const closeCart = () => {
-    cartSidebar?.classList.remove('active');
-    cartOverlay?.classList.remove('active');
-  };
-
-  cartToggle?.addEventListener('click', openCart);
-  cartClose?.addEventListener('click', closeCart);
-  cartOverlay?.addEventListener('click', closeCart);
+  document.getElementById('cartToggle')?.addEventListener('click', openCartSidebar);
+  document.getElementById('cartClose')?.addEventListener('click', closeCartSidebar);
+  document.getElementById('cartOverlay')?.addEventListener('click', closeCartSidebar);
+  document.getElementById('wishlistToggle')?.addEventListener('click', openWishlistSidebar);
+  document.getElementById('wishlistClose')?.addEventListener('click', closeWishlistSidebar);
+  document.getElementById('wishlistOverlay')?.addEventListener('click', closeWishlistSidebar);
 
   // Close on Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      closeCart();
+      closeCartSidebar();
+      closeWishlistSidebar();
     }
   });
 }
 
-function renderCartSidebar(): void {
-  // This will be implemented when we add the cart store
-  const cartItems = document.getElementById('cartItems');
-  const cartFooter = document.getElementById('cartFooter');
-  if (cartItems) {
-    cartItems.innerHTML = '<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Your bag is empty</p></div>';
-  }
-  if (cartFooter) {
-    cartFooter.style.display = 'none';
-  }
+/** Single delegated listener — works for cards, product page & sidebar rows. */
+function initShopActions(): void {
+  document.addEventListener('click', (e) => {
+    if (!(e.target instanceof Element)) return;
+    const action = e.target.closest<HTMLElement>(
+      '[data-add-to-cart],[data-wishlist-toggle],[data-quick-view],' +
+        '[data-cart-inc],[data-cart-dec],[data-cart-remove],' +
+        '[data-wish-remove],[data-wish-to-cart]'
+    );
+    if (!action) return;
+    // Action buttons may sit inside links — always swallow the click
+    e.preventDefault();
+    e.stopPropagation();
+
+    const idOf = (name: string): number => Number(action.getAttribute(name));
+
+    // ── Add to bag ──
+    if (action.hasAttribute('data-add-to-cart')) {
+      const product = getProduct(idOf('data-add-to-cart'));
+      if (!product) return;
+      addToCart(product.id);
+      showToast(`${product.name} ${product.variant} added to your bag`);
+      if (action.hasAttribute('data-open-cart')) openCartSidebar();
+      return;
+    }
+
+    // ── Wishlist toggle (cards + product page) ──
+    if (action.hasAttribute('data-wishlist-toggle')) {
+      const product = getProduct(idOf('data-wishlist-toggle'));
+      if (!product) return;
+      const added = toggleWishlist(product.id);
+      showToast(
+        added ? `${product.name} added to wishlist` : `${product.name} removed from wishlist`,
+        added ? 'success' : 'info'
+      );
+      return;
+    }
+
+    // ── Quick view → product page ──
+    if (action.hasAttribute('data-quick-view')) {
+      const product = getProduct(idOf('data-quick-view'));
+      if (product) window.location.href = `/shop/${product.slug}`;
+      return;
+    }
+
+    // ── Cart quantity steppers ──
+    if (action.hasAttribute('data-cart-inc')) {
+      const id = idOf('data-cart-inc');
+      const line = getCart().find((l) => l.id === id);
+      if (line) setCartQty(id, line.qty + 1);
+      return;
+    }
+    if (action.hasAttribute('data-cart-dec')) {
+      const id = idOf('data-cart-dec');
+      const line = getCart().find((l) => l.id === id);
+      if (line) setCartQty(id, line.qty - 1);
+      return;
+    }
+    if (action.hasAttribute('data-cart-remove')) {
+      removeFromCart(idOf('data-cart-remove'));
+      showToast('Removed from your bag', 'info');
+      return;
+    }
+
+    // ── Wishlist sidebar actions ──
+    if (action.hasAttribute('data-wish-remove')) {
+      removeFromWishlist(idOf('data-wish-remove'));
+      showToast('Removed from wishlist', 'info');
+      return;
+    }
+    if (action.hasAttribute('data-wish-to-cart')) {
+      const product = getProduct(idOf('data-wish-to-cart'));
+      if (!product) return;
+      addToCart(product.id);
+      removeFromWishlist(product.id);
+      showToast(`${product.name} moved to your bag`);
+      openCartSidebar();
+      return;
+    }
+  });
+}
+
+/** Re-sync every shop surface after any store mutation. */
+function syncShopUI(): void {
+  updateBadges();
+  syncWishlistButtons();
+  renderCartSidebar();
+  renderWishlistSidebar();
+}
+
+function initShop(): void {
+  onStoreChange(syncShopUI);
+  syncShopUI();
+  initShopActions();
 }
 
 // Reveal animations (IntersectionObserver)
@@ -380,6 +640,7 @@ function initHeroSparkles(): void {
 function initTestimonialScroll(): void {
   const track = document.getElementById('testimonialTrack');
   if (!track) return;
+  const scroller: HTMLElement = track;
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
@@ -387,8 +648,8 @@ function initTestimonialScroll(): void {
   let scrollPos = 0;
   function autoScroll(): void {
     scrollPos += 0.5;
-    if (scrollPos >= track.scrollWidth - track.clientWidth) scrollPos = 0;
-    track.scrollLeft = scrollPos;
+    if (scrollPos >= scroller.scrollWidth - scroller.clientWidth) scrollPos = 0;
+    scroller.scrollLeft = scrollPos;
     requestAnimationFrame(autoScroll);
   }
   requestAnimationFrame(autoScroll);
@@ -420,6 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initThemeToggle();
   initSearch();
   initCart();
+  initShop();
   initNavigation();
   initRevealAnimations();
   initCounters();
@@ -435,3 +697,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for global access (legacy compatibility)
 window.formatRs = (n: number) => 'Rs.' + new Intl.NumberFormat('en-PK').format(n);
+window.showToast = showToast;

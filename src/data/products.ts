@@ -11,11 +11,11 @@ export interface Product {
   category: string;
   collection: 'kitchen' | 'rose' | 'aloe' | 'premium';
   price: number;
-  oldPrice?: number;
+  oldPrice?: number | null;
   rating: number;
   reviews: number;
   stock: number;
-  badge?: string;
+  badge?: string | null;
   image: string;
   images: string[];
   description: string;
@@ -409,7 +409,6 @@ export const products: Product[] = [
     category: 'Home Care',
     collection: 'kitchen',
     price: 650,
-    oldPrice: null,
     rating: 4.8,
     reviews: 234,
     stock: 55,
@@ -435,7 +434,6 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 187,
     stock: 71,
-    badge: null,
     image: '/images/multipurpose-cleaner.jpg',
     images: ['/images/multipurpose-cleaner.jpg'],
     description: 'One bottle for every surface in your home. From countertops to bathroom tiles, this cleaner does it all naturally.',

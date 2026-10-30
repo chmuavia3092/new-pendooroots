@@ -221,8 +221,21 @@ const fullOgImage = new URL(ogImage, siteUrl).href;
         <span>Shipping</span>
         <span id="cartShipping">Calculated at checkout</span>
       </div>
-      <SiteButton href="/checkout" size="lg" full>Proceed to Checkout</SiteButton>
+      <SiteButton href="https://wa.me/923474736347" id="checkoutBtn" target="_blank" rel="noopener" size="lg" full>Order on WhatsApp</SiteButton>
       <SiteButton href="/shop" size="lg" full variant="secondary">Continue Shopping</SiteButton>
+    </div>
+  </aside>
+
+  <!-- WISHLIST SIDEBAR -->
+  <div class="cart-overlay" id="wishlistOverlay" aria-hidden="true"></div>
+  <aside class="cart-sidebar" id="wishlistSidebar" role="dialog" aria-modal="true" aria-label="Wishlist">
+    <div class="cart-header">
+      <h3>My Wishlist</h3>
+      <button class="cart-close" id="wishlistClose" aria-label="Close wishlist"><i class="fas fa-times" aria-hidden="true"></i></button>
+    </div>
+    <div class="cart-items" id="wishlistItems"></div>
+    <div class="cart-footer" id="wishlistFooter">
+      <SiteButton href="/shop" size="lg" full variant="secondary">Discover More</SiteButton>
     </div>
   </aside>
 

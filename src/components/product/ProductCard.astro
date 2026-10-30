@@ -18,27 +18,11 @@ const { product, index = 0 } = Astro.props;
         <div class="product-card-image">
           <img src={product.image} alt={`${product.name} ${product.variant}`} width="400" height="400" loading="lazy" decoding="async" />
           <span class="product-badge">{product.badge}</span>
-          <div class="product-card-actions">
-            <button class="product-action-btn" data-wishlist-toggle={product.id} aria-label="Add to wishlist">
-              <i class="fas fa-heart" aria-hidden="true"></i>
-            </button>
-            <button class="product-action-btn" data-quick-view={product.id} aria-label="Quick view">
-              <i class="fas fa-eye" aria-hidden="true"></i>
-            </button>
-          </div>
         </div>
       </BorderBeam>
     ) : (
       <div class="product-card-image">
         <img src={product.image} alt={`${product.name} ${product.variant}`} width="400" height="400" loading="lazy" decoding="async" />
-        <div class="product-card-actions">
-          <button class="product-action-btn" data-wishlist-toggle={product.id} aria-label="Add to wishlist">
-            <i class="fas fa-heart" aria-hidden="true"></i>
-          </button>
-          <button class="product-action-btn" data-quick-view={product.id} aria-label="Quick view">
-            <i class="fas fa-eye" aria-hidden="true"></i>
-          </button>
-        </div>
       </div>
     )}
     <div class="product-card-info">
@@ -55,4 +39,16 @@ const { product, index = 0 } = Astro.props;
       </div>
     </div>
   </a>
+  <!-- Actions sit OUTSIDE the link so clicks never navigate -->
+  <div class="product-card-actions">
+    <button type="button" class="product-action-btn" data-wishlist-toggle={product.id} aria-label="Add to wishlist" aria-pressed="false">
+      <i class="fas fa-heart" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="product-action-btn" data-quick-view={product.id} aria-label="View details">
+      <i class="fas fa-eye" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="product-action-btn product-action-btn--cart" data-add-to-cart={product.id} aria-label="Add to bag">
+      <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+    </button>
+  </div>
 </article>
