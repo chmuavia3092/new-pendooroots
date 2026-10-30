@@ -48,6 +48,11 @@
 
 .accent {
   color: var(--color-primary);
+  /* Brand script — every highlighted word in taglines & titles */
+  font-family: var(--font-family-script);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.1em;
 }
 
 .section-desc {
