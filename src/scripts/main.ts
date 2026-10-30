@@ -655,6 +655,88 @@ function initTestimonialScroll(): void {
   requestAnimationFrame(autoScroll);
 }
 
+// Social Proof block — auto-cycling testimonial cards with dot navigation
+function initSocialProof(): void {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLElement>('[data-social-proof]').forEach((section) => {
+    const track = section.querySelector<HTMLElement>('#socialProofTrack');
+    if (!track) return;
+    const cards = Array.from(track.querySelectorAll<HTMLElement>('.social-proof-card'));
+    const dots = Array.from(section.querySelectorAll<HTMLElement>('.social-proof-dot'));
+    const intervalMs = Number(section.getAttribute('data-interval')) || 5000;
+
+    if (cards.length === 0) return;
+    if (prefersReducedMotion) {
+      cards.forEach((c) => {
+        c.style.position = 'static';
+        c.style.opacity = '1';
+        c.style.pointerEvents = 'auto';
+        c.style.marginBottom = '24px';
+      });
+      return;
+    }
+
+    let current = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const show = (index: number): void => {
+      cards.forEach((c) => {
+        c.classList.remove('active');
+        c.style.position = 'absolute';
+        c.style.inset = '0';
+        c.style.opacity = '0';
+        c.style.pointerEvents = 'none';
+      });
+      dots.forEach((d) => {
+        d.classList.remove('active');
+        d.setAttribute('aria-pressed', 'false');
+      });
+      const card = cards[index];
+      const dot = dots[index];
+      if (card) {
+        card.classList.add('active');
+        card.style.position = 'relative';
+        card.style.opacity = '1';
+        card.style.pointerEvents = 'auto';
+      }
+      if (dot) {
+        dot.classList.add('active');
+        dot.setAttribute('aria-pressed', 'true');
+      }
+    };
+
+    const next = (): void => {
+      current = (current + 1) % cards.length;
+      show(current);
+    };
+
+    const reset = (): void => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(next, intervalMs);
+    };
+
+    show(current);
+    reset();
+
+    section.addEventListener('mouseenter', () => {
+      if (timer) clearTimeout(timer);
+      timer = null;
+    });
+    section.addEventListener('mouseleave', reset);
+
+    dots.forEach((d) => {
+      d.addEventListener('click', () => {
+        const idx = Number(d.getAttribute('data-dot'));
+        if (!Number.isNaN(idx)) {
+          current = idx;
+          show(current);
+          reset();
+        }
+      });
+    });
+  });
+}
+
 // Preloader is CSS-only (animation in BaseLayout.astro), no JS needed
 
 // Navigation (client-side routing for SPA-like behavior)
@@ -692,6 +774,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroParticles();
     initHeroSparkles();
     initTestimonialScroll();
+    initSocialProof();
   }, 2500);
 });
 
